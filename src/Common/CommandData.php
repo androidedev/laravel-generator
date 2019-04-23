@@ -222,6 +222,13 @@ class CommandData
                         if (isset($field['relation'])) {
                             $this->relations[] = GeneratorFieldRelation::parseRelation($field['relation']);
                         }
+			// allow 'relations' a json array with more than one relation
+                        if (isset($field['relations'])) {
+                            foreach ($field['relations'] as $value)
+                            {
+                                $this->relations[] = GeneratorFieldRelation::parseRelation($value);	
+                            }
+                        }
                     }
                 }
             } else {
