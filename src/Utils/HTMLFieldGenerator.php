@@ -11,6 +11,8 @@ class HTMLFieldGenerator
         $fieldTemplate = '';
 
         switch ($field->htmlType) {
+            case 'summernote':
+            case 'slug':
             case 'text':
             case 'textarea':
             case 'date':
@@ -19,6 +21,15 @@ class HTMLFieldGenerator
             case 'password':
             case 'number':
                 $fieldTemplate = get_template('scaffold.fields.'.$field->htmlType, $templateType);
+                break;
+            case 'select2':
+                $fieldTemplate = get_template('scaffold.fields.select2', $templateType);
+                $radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
+                $fieldTemplate = str_replace(
+                    '$INPUT_ARR$',
+                    GeneratorFieldsInputUtil::prepareKeyValueArrayStr($radioLabels),
+                    $fieldTemplate
+                );
                 break;
             case 'select':
             case 'enum':
