@@ -2,11 +2,14 @@
 
 namespace InfyOm\Generator\Common;
 
+use Illuminate\Support\Str;
+
 class GeneratorFieldRelation
 {
     /** @var string */
     public $type;
     public $inputs;
+    public $relationName;
 
     public static function parseRelation($relationInput)
     {
@@ -14,40 +17,48 @@ class GeneratorFieldRelation
 
         $relation = new self();
         $relation->type = array_shift($inputs);
-        $relation->inputs = $inputs;
+        $modelWithRelation = explode(':', array_shift($inputs)); //e.g ModelName:relationName
+        if (count($modelWithRelation) == 2) {
+            $relation->relationName = $modelWithRelation[1];
+            unset($modelWithRelation[1]);
+        }
+        $relation->inputs = array_merge($modelWithRelation, $inputs);
 
         return $relation;
     }
 
     public function getRelationFunctionText()
     {
-        $modelName = $this->inputs[0];
+        $relationName = (!empty($this->relationName)) ? $this->relationName : Str::camel($this->inputs[0]);
+
         switch ($this->type) {
             case '1t1':
-                $functionName = camel_case($modelName);
+                $functionName = $relationName;
                 $relation = 'hasOne';
                 $relationClass = 'HasOne';
                 break;
             case '1tm':
-                $functionName = camel_case(str_plural($modelName));
+                $functionName = $relationName;
                 $relation = 'hasMany';
                 $relationClass = 'HasMany';
                 break;
             case 'mt1':
-                if (isset($this->inputs[1])) {
-                    $modelName = str_replace('_id', '', strtolower($this->inputs[1]));
+                if (!empty($this->relationName)) {
+                    $relationName = $this->relationName;
+                } elseif (isset($this->inputs[1])) {
+                    $relationName = Str::camel(str_replace('_id', '', strtolower($this->inputs[1])));
                 }
-                $functionName = camel_case($modelName);
+                $functionName = $relationName;
                 $relation = 'belongsTo';
                 $relationClass = 'BelongsTo';
                 break;
             case 'mtm':
-                $functionName = camel_case(str_plural($modelName));
+                $functionName = $relationName;
                 $relation = 'belongsToMany';
                 $relationClass = 'BelongsToMany';
                 break;
             case 'hmt':
-                $functionName = camel_case(str_plural($modelName));
+                $functionName = $relationName;
                 $relation = 'hasManyThrough';
                 $relationClass = 'HasManyThrough';
                 break;
@@ -67,6 +78,7 @@ class GeneratorFieldRelation
 
     private function generateRelation($functionName, $relation, $relationClass)
     {
+
         $inputs = $this->inputs;
         $modelName = array_shift($inputs);
 
@@ -88,4 +100,5 @@ class GeneratorFieldRelation
 
         return $template;
     }
+
 }
