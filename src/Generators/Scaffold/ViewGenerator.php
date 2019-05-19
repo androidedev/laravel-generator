@@ -79,6 +79,10 @@ class ViewGenerator extends BaseGenerator
         if ($this->commandData->getAddOn('datatables')) {
             $templateData = $this->generateDataTableBody();
             $this->generateDataTableActions();
+
+        } elseif ($this->commandData->getAddOn('bootstraptables')) { // bootstrap-table
+            $templateData = $this->generateBootstrapTableBody();
+
         } else {
             $templateData = $this->generateBladeTableBody();
         }
@@ -164,6 +168,8 @@ class ViewGenerator extends BaseGenerator
         $templateData = fill_template($this->commandData->dynamicVars, $templateData);
 
         if ($this->commandData->getAddOn('datatables')) {
+            $templateData = str_replace('$PAGINATE$', '', $templateData);
+        } else if ($this->commandData->getAddOn('bootstraptable')) {
             $templateData = str_replace('$PAGINATE$', '', $templateData);
         } else {
             $paginate = $this->commandData->getOption('paginate');
@@ -286,4 +292,35 @@ class ViewGenerator extends BaseGenerator
             }
         }
     }
+
+    private function generateBootstrapTableBody(){
+        $templateData = get_template('scaffold.views.bootstraptable_body', $this->templateType);
+        $templateData = fill_template($this->commandData->dynamicVars, $templateData);
+        $templateData = str_replace('$FIELD_HEADERS$', $this->generateBootstrapTableHeaderFields(), $templateData);
+        return $templateData;
+
+    }
+
+    private function generateBootstrapTableHeaderFields(){
+        $headerFieldTemplate = get_template('scaffold.views.table_header', $this->templateType);
+
+        $headerFields = [];
+
+        foreach ($this->commandData->fields as $field) {
+            if (!$field->inIndex) {
+                continue;
+            }
+            $headerFields[] = fill_template_with_field_data( // $fieldTemplate = 
+                $this->commandData->dynamicVars,
+                $this->commandData->fieldNamesMapping,
+                $headerFieldTemplate,
+                $field
+            );
+        }
+
+        return implode(infy_nl_tab(1, 2), $headerFields);
+
+    }
+
+
 }

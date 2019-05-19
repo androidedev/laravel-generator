@@ -34,6 +34,13 @@ class ControllerGenerator extends BaseGenerator
             $templateData = get_template('scaffold.controller.datatable_controller', 'laravel-generator');
 
             $this->generateDataTable();
+
+        } elseif ($this->commandData->getAddOn('bootstraptables')) { // bootstrap-table
+            // ony differs from blade.table couse paginator, boostrap-table comes with their own paginator included
+            $templateData = get_template('scaffold.controller.controller', 'laravel-generator');
+
+            $templateData = str_replace('$RENDER_TYPE$', 'all()', $templateData);
+
         } else {
             $templateData = get_template('scaffold.controller.controller', 'laravel-generator');
 

@@ -78,6 +78,7 @@ class GeneratorConfig
         'paginate',
         'skip',
         'datatables',
+        'bootstraptables',
         'views',
         'relations',
         'plural',
@@ -353,6 +354,15 @@ class GeneratorConfig
                 $this->addOns['datatables'] = false;
             }
         }
+
+        // bootstrap-table
+        if (!empty($this->options['bootstraptables'])) {
+            if (strtolower($this->options['bootstraptables']) == 'true') {
+                $this->addOns['bootstraptables'] = true;
+            } else {
+                $this->addOns['bootstraptables'] = false;
+            }
+        }
     }
 
     public function preparePrefixes()
@@ -455,7 +465,7 @@ class GeneratorConfig
             $this->loadDynamicVariables($this->commandData);
         }
 
-        $addOns = ['swagger', 'tests', 'datatables'];
+        $addOns = ['swagger', 'tests', 'datatables', 'bootstraptables'];
 
         foreach ($addOns as $addOn) {
             if (isset($jsonData['addOns'][$addOn])) {
@@ -492,6 +502,7 @@ class GeneratorConfig
         $this->addOns['swagger'] = config('infyom.laravel_generator.add_on.swagger', false);
         $this->addOns['tests'] = config('infyom.laravel_generator.add_on.tests', false);
         $this->addOns['datatables'] = config('infyom.laravel_generator.add_on.datatables', false);
+        $this->addOns['bootstraptables'] = config('infyom.laravel_generator.add_on.bootstraptables', false); // bootstrap-table
         $this->addOns['menu.enabled'] = config('infyom.laravel_generator.add_on.menu.enabled', false);
         $this->addOns['menu.menu_file'] = config('infyom.laravel_generator.add_on.menu.menu_file', 'layouts.menu');
     }

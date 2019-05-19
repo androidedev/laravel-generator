@@ -158,6 +158,8 @@ return [
 
         'datatables'    => false,
 
+        'bootstraptables' => true,
+
         'menu'          => [
 
             'enabled'       => true,
