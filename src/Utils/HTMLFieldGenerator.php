@@ -22,6 +22,15 @@ class HTMLFieldGenerator
             case 'number':
                 $fieldTemplate = get_template('scaffold.fields.'.$field->htmlType, $templateType);
                 break;
+            case 'select2ajax':
+                $fieldTemplate = get_template('scaffold.fields.select2ajax', $templateType);
+                //$radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
+                //$fieldTemplate = str_replace(
+                //    '$INPUT_ARR$',
+                //    GeneratorFieldsInputUtil::prepareKeyValueArrayStr($radioLabels),
+                //    $fieldTemplate
+                //);
+                break;
             case 'select2':
                 $fieldTemplate = get_template('scaffold.fields.select2', $templateType);
                 $radioLabels = GeneratorFieldsInputUtil::prepareKeyValueArrFromLabelValueStr($field->htmlValues);
