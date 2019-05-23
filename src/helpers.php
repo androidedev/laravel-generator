@@ -1,5 +1,8 @@
 <?php
 
+use Illuminate\Support\Str;
+use InfyOm\Generator\Common\GeneratorField;
+
 if (!function_exists('infy_tab')) {
     /**
      * Generates tab with spaces.
@@ -186,6 +189,6 @@ if (!function_exists('model_name_from_table_name')) {
      */
     function model_name_from_table_name($tableName)
     {
-        return ucfirst(camel_case(str_singular($tableName)));
+        return Str::ucfirst(Str::camel(Str::singular($tableName)));
     }
 }

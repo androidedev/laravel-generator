@@ -93,8 +93,8 @@
         "relation": "1tm,Comment"
     },
     {
-        "type": "relation",
-        "relation": "1tm,User:customRelationName,user_id,id"
+      "type": "relation",
+      "relation": "1tm,User:customRelationName,user_id,id"
     },
     {
         "name": "users",
