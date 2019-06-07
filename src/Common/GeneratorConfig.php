@@ -56,6 +56,7 @@ class GeneratorConfig
     public $mSlashPlural;
     public $mHuman;
     public $mHumanPlural;
+    public $mLower;
 
     /* Generator Options */
     public $options;
@@ -251,6 +252,8 @@ class GeneratorConfig
         $commandData->addDynamicVariable('$MODEL_NAME_PLURAL_SLASH$', $this->mSlashPlural);
         $commandData->addDynamicVariable('$MODEL_NAME_HUMAN$', $this->mHuman);
         $commandData->addDynamicVariable('$MODEL_NAME_PLURAL_HUMAN$', $this->mHumanPlural);
+        $commandData->addDynamicVariable('$MODEL_NAME_LOWER$', $this->mLower);
+
 
         if (!empty($this->prefixes['route'])) {
             $commandData->addDynamicVariable('$ROUTE_NAMED_PREFIX$', $this->prefixes['route'].'.');
@@ -327,6 +330,7 @@ class GeneratorConfig
         $this->mSlashPlural = str_replace('_', '/', Str::snake($this->mSnakePlural));
         $this->mHuman = Str::title(str_replace('_', ' ', Str::snake($this->mSnake)));
         $this->mHumanPlural = Str::title(str_replace('_', ' ', Str::snake($this->mSnakePlural)));
+        $this->mLower = strtolower($this->mName);
     }
 
     public function prepareOptions(CommandData &$commandData)
