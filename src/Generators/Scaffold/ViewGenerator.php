@@ -302,7 +302,7 @@ class ViewGenerator extends BaseGenerator
     }
 
     private function generateBootstrapTableHeaderFields(){
-        $headerFieldTemplate = get_template('scaffold.views.table_header', $this->templateType);
+        $headerFieldTemplate = get_template('scaffold.views.bootstraptable_header', $this->templateType);
 
         $headerFields = [];
 
