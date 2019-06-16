@@ -156,6 +156,16 @@ if (!function_exists('fill_field_template')) {
             $template = str_replace($variable, $field->$key, $template);
         }
 
+        // add HTML required class to required fields (needs "$REQUIRED_CLASS$" variable in stub template)
+        if ( (strpos($field->validations,'required') !== false) && (strpos($template,'$REQUIRED_CLASS$') !== false) )
+        {
+            $template = str_replace('$REQUIRED_CLASS$', " , 'required'", $template);
+        }
+        else
+        {
+            $template = str_replace('$REQUIRED_CLASS$', "", $template);
+        }
+
         return $template;
     }
 }
